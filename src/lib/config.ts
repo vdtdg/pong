@@ -7,8 +7,8 @@ export const COLORS = {
 	background: '#0a0a1a',
 	player1: '#ff00e5',
 	player2: '#00ffe5',
-	ball1: '#ff80f0',
-	ball2: '#80fff0',
+	ball1: '#ffffff',
+	ball2: '#ffffff',
 	ball1Glow: '#ff00e5',
 	ball2Glow: '#00ffe5'
 } as const;
