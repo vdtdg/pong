@@ -68,17 +68,17 @@ function stepBall(ball: Ball, owner: number, grid: Uint8Array): void {
 		ball.vx = Math.abs(ball.vx);
 		nx = EPS;
 	}
-	if (nx >= GRID_SIZE - 1) {
+	if (nx >= GRID_SIZE) {
 		ball.vx = -Math.abs(ball.vx);
-		nx = GRID_SIZE - 1 - EPS;
+		nx = GRID_SIZE - EPS;
 	}
 	if (ny <= 0) {
 		ball.vy = Math.abs(ball.vy);
 		ny = EPS;
 	}
-	if (ny >= GRID_SIZE - 1) {
+	if (ny >= GRID_SIZE) {
 		ball.vy = -Math.abs(ball.vy);
-		ny = GRID_SIZE - 1 - EPS;
+		ny = GRID_SIZE - EPS;
 	}
 
 	const targetCX = Math.floor(nx);
