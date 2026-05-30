@@ -3,7 +3,7 @@ FROM node:22-alpine AS builder
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
@@ -18,6 +18,7 @@ COPY --from=builder /app/build /app/build
 COPY --from=builder /app/package.json /app/package.json
 COPY --from=builder /app/pnpm-lock.yaml /app/pnpm-lock.yaml
 COPY --from=builder /app/pnpm-workspace.yaml /app/pnpm-workspace.yaml
+COPY --from=builder /app/.npmrc /app/.npmrc
 
 RUN pnpm install --frozen-lockfile --prod
 
