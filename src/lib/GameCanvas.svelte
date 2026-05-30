@@ -22,6 +22,7 @@
 	let count1 = $state(0);
 	let count2 = $state(0);
 	let viewers = $state(0);
+	let tickDisplay = $state(0);
 	let heartbeatId = 0;
 	const totalCells = GRID_SIZE * GRID_SIZE;
 
@@ -44,6 +45,7 @@
 		}
 		count1 = c1;
 		count2 = c2;
+		tickDisplay = s.tick;
 
 
 
@@ -185,6 +187,9 @@
 			<div class="viewer-count">
 				&#128065; {viewers} watching
 			</div>
+			<div class="tick-count">
+				tick {tickDisplay}
+			</div>
 		</div>
 
 		<div class="counter side-right counter-p2">
@@ -270,6 +275,14 @@
 	font-size: 1.2rem;
 	color: #666688;
 	margin-top: 6px;
+}
+
+.tick-count {
+	align-self: flex-end;
+	font-family: monospace;
+	font-size: 0.7rem;
+	color: #444466;
+	margin-top: 2px;
 }
 
 .error-overlay {
