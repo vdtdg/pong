@@ -1,16 +1,16 @@
 <script>
 	import { onMount } from 'svelte';
 	import { GRID_SIZE, PIXEL_SIZE, TICK_RATE, COLORS } from './config.js';
-	import { deserialize, tick, fastForward, type GameState, type SerializedState } from './engine.js';
+	import { deserialize, tick } from './engine.js';
 
-	let canvasEl = $state<HTMLCanvasElement>();
-	let state = $state<GameState | null>(null);
+	let canvasEl = $state();
+	let state = $state(null);
 	let rafId = $state(0);
 	let startTick = $state(0);
 	let startTime = $state(0);
 	let error = $state('');
 
-	function draw(ctx: CanvasRenderingContext2D, s: GameState) {
+	function draw(ctx, s) {
 		const { grid, balls } = s;
 
 		ctx.fillStyle = COLORS.background;
@@ -93,7 +93,7 @@
 		try {
 			const res = await fetch('/api/game-state');
 			if (!res.ok) throw new Error('Fetch failed');
-			const data: SerializedState = await res.json();
+			const data = await res.json();
 			state = deserialize(data);
 			startTick = data.tick;
 			startTime = performance.now();
@@ -108,7 +108,7 @@
 		try {
 			const res = await fetch('/api/game-state');
 			if (!res.ok) throw new Error('Fetch failed');
-			const data: SerializedState = await res.json();
+			const data = await res.json();
 			state = deserialize(data);
 			startTick = data.tick;
 			startTime = performance.now();
