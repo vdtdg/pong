@@ -13,6 +13,7 @@
 		ball2Glow: dimColor(COLORS.ball2Glow, BRIGHTNESS)
 	};
 
+	const sessionId = crypto.randomUUID();
 	let canvasEl = $state();
 	let state = $state(null);
 	let rafId = $state(0);
@@ -21,6 +22,8 @@
 	let error = $state('');
 	let count1 = $state(0);
 	let count2 = $state(0);
+	let viewers = $state(0);
+	let heartbeatId = 0;
 	const totalCells = GRID_SIZE * GRID_SIZE;
 
 	function draw(ctx, s) {
@@ -103,6 +106,7 @@
 			state = deserialize(data);
 			startTick = data.tick;
 			startTime = performance.now();
+			viewers = data.viewers ?? 0;
 			error = '';
 		} catch (e) {
 			error = 'Disconnected — retrying...';
@@ -118,6 +122,7 @@
 			state = deserialize(data);
 			startTick = data.tick;
 			startTime = performance.now();
+			viewers = data.viewers ?? 0;
 			error = '';
 			rafId = requestAnimationFrame(loop);
 		} catch (e) {
@@ -139,12 +144,26 @@
 		resuming = false;
 	}
 
+	async function sendHeartbeat() {
+		try {
+			await fetch('/api/heartbeat', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ sessionId })
+			});
+		} catch {
+			/* silent */
+		}
+	}
+
 	onMount(() => {
 		init();
+		heartbeatId = setInterval(sendHeartbeat, 10_000);
 		document.addEventListener('visibilitychange', handleResume);
 		window.addEventListener('focus', handleResume);
 		return () => {
 			if (rafId) cancelAnimationFrame(rafId);
+			clearInterval(heartbeatId);
 			document.removeEventListener('visibilitychange', handleResume);
 			window.removeEventListener('focus', handleResume);
 		};
@@ -171,6 +190,9 @@
 				<span class="bar-divider"></span>
 				<span class="bar-count" style="color: {COLORS.player2}">{count2}</span>
 				<span class="bar-pct">{((count2 / totalCells) * 100).toFixed(1)}%</span>
+			</div>
+			<div class="viewer-count">
+				&#128065; {viewers} watching
 			</div>
 		</div>
 
@@ -239,6 +261,14 @@
 
 .counts-bar {
 	display: none;
+}
+
+.viewer-count {
+	align-self: flex-end;
+	font-family: monospace;
+	font-size: 0.75rem;
+	color: #555577;
+	margin-top: 4px;
 }
 
 .error-overlay {
