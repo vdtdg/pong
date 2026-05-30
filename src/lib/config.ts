@@ -2,7 +2,7 @@ export const GRID_SIZE = 20;
 export const TICK_RATE = 60;
 export const BALL_SPEED = 10 / TICK_RATE;
 export const PIXEL_SIZE = 30;
-export const BALL_RADIUS = 0.4;
+export const BALL_RADIUS = 0.3;
 export const BRIGHTNESS = 0.8;
 
 export const COLORS = {
