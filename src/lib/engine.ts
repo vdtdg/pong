@@ -37,8 +37,6 @@ export function createState(seed: number): GameState {
 		}
 	}
 
-	const speed0 = BALL_SPEED * (0.5 + rand() * 1.0);
-	const speed1 = BALL_SPEED * (0.5 + rand() * 1.0);
 	const angle0 = rand() * Math.PI * 2;
 	const angle1 = rand() * Math.PI * 2;
 
@@ -46,14 +44,14 @@ export function createState(seed: number): GameState {
 		{
 			x: GRID_SIZE / 4 - 1 + rand() * 2,
 			y: GRID_SIZE / 2 - 1 + rand() * 2,
-			vx: Math.cos(angle0) * speed0,
-			vy: Math.sin(angle0) * speed0
+			vx: Math.cos(angle0) * BALL_SPEED,
+			vy: Math.sin(angle0) * BALL_SPEED
 		},
 		{
 			x: (3 * GRID_SIZE) / 4 - 1 + rand() * 2,
 			y: GRID_SIZE / 2 - 1 + rand() * 2,
-			vx: Math.cos(angle1) * speed1,
-			vy: Math.sin(angle1) * speed1
+			vx: Math.cos(angle1) * BALL_SPEED,
+			vy: Math.sin(angle1) * BALL_SPEED
 		}
 	];
 
