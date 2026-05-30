@@ -9,6 +9,9 @@
 	let startTick = $state(0);
 	let startTime = $state(0);
 	let error = $state('');
+	let count1 = $state(0);
+	let count2 = $state(0);
+	const totalCells = GRID_SIZE * GRID_SIZE;
 
 	function draw(ctx, s) {
 		const { grid, balls } = s;
@@ -16,13 +19,19 @@
 		ctx.fillStyle = COLORS.background;
 		ctx.fillRect(0, 0, GRID_SIZE * PIXEL_SIZE, GRID_SIZE * PIXEL_SIZE);
 
+		let c1 = 0;
+		let c2 = 0;
 		for (let y = 0; y < GRID_SIZE; y++) {
 			for (let x = 0; x < GRID_SIZE; x++) {
 				const cell = grid[y * GRID_SIZE + x];
+				if (cell === 0) c1++;
+				else c2++;
 				ctx.fillStyle = cell === 0 ? COLORS.player1 : COLORS.player2;
 				ctx.fillRect(x * PIXEL_SIZE + 1, y * PIXEL_SIZE + 1, PIXEL_SIZE - 2, PIXEL_SIZE - 2);
 			}
 		}
+		count1 = c1;
+		count2 = c2;
 
 		ctx.save();
 		ctx.shadowColor = COLORS.gridGlow;
@@ -132,22 +141,82 @@
 	});
 </script>
 
-<canvas
-	bind:this={canvasEl}
-	width={GRID_SIZE * PIXEL_SIZE}
-	height={GRID_SIZE * PIXEL_SIZE}
-	class="pixelated max-h-[100vmin] max-w-[100vmin]"
-></canvas>
+<div class="root">
+	<div class="game-wrapper">
+		<div class="counter" style="color: {COLORS.player1}">
+			<span class="count-num">{count1}</span>
+			<span class="count-pct">{((count1 / totalCells) * 100).toFixed(1)}%</span>
+		</div>
 
-{#if error}
-	<div class="absolute inset-0 flex items-center justify-center bg-black/80 text-white">
-		{error}
+		<canvas
+			bind:this={canvasEl}
+			width={GRID_SIZE * PIXEL_SIZE}
+			height={GRID_SIZE * PIXEL_SIZE}
+			class="pixelated"
+		></canvas>
+
+		<div class="counter" style="color: {COLORS.player2}">
+			<span class="count-num">{count2}</span>
+			<span class="count-pct">{((count2 / totalCells) * 100).toFixed(1)}%</span>
+		</div>
 	</div>
-{/if}
+
+	{#if error}
+		<div class="error-overlay">
+			{error}
+		</div>
+	{/if}
+</div>
 
 <style>
+	.root {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.game-wrapper {
+		display: flex;
+		align-items: center;
+		gap: 24px;
+	}
+
 	.pixelated {
 		image-rendering: pixelated;
 		image-rendering: crisp-edges;
+		max-height: 90vmin;
+		max-width: 70vmin;
+	}
+
+	.counter {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		font-family: monospace;
+		min-width: 80px;
+	}
+
+	.count-num {
+		font-size: 2.5rem;
+		font-weight: bold;
+		text-shadow: 0 0 12px currentColor;
+		line-height: 1;
+	}
+
+	.count-pct {
+		font-size: 1rem;
+		opacity: 0.7;
+		margin-top: 4px;
+	}
+
+	.error-overlay {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: rgba(0, 0, 0, 0.8);
+		color: white;
 	}
 </style>
