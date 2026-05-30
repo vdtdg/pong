@@ -37,21 +37,23 @@ export function createState(seed: number): GameState {
 		}
 	}
 
+	const speed0 = BALL_SPEED * (0.5 + rand() * 1.0);
+	const speed1 = BALL_SPEED * (0.5 + rand() * 1.0);
 	const angle0 = rand() * Math.PI * 2;
 	const angle1 = rand() * Math.PI * 2;
 
 	const balls: [Ball, Ball] = [
 		{
-			x: GRID_SIZE / 4 - 0.5 + rand() * 1,
-			y: GRID_SIZE / 2 - 0.5 + rand() * 1,
-			vx: Math.cos(angle0) * BALL_SPEED,
-			vy: Math.sin(angle0) * BALL_SPEED
+			x: GRID_SIZE / 4 - 1 + rand() * 2,
+			y: GRID_SIZE / 2 - 1 + rand() * 2,
+			vx: Math.cos(angle0) * speed0,
+			vy: Math.sin(angle0) * speed0
 		},
 		{
-			x: (3 * GRID_SIZE) / 4 - 0.5 + rand() * 1,
-			y: GRID_SIZE / 2 - 0.5 + rand() * 1,
-			vx: Math.cos(angle1) * BALL_SPEED,
-			vy: Math.sin(angle1) * BALL_SPEED
+			x: (3 * GRID_SIZE) / 4 - 1 + rand() * 2,
+			y: GRID_SIZE / 2 - 1 + rand() * 2,
+			vx: Math.cos(angle1) * speed1,
+			vy: Math.sin(angle1) * speed1
 		}
 	];
 
@@ -60,25 +62,43 @@ export function createState(seed: number): GameState {
 
 const EPS = 1e-9;
 
-function stepBall(ball: Ball, owner: number, grid: Uint8Array): void {
+function jitter(x: number, y: number, tick: number): number {
+	const a = Math.imul(Math.floor(x * 10000), 2654435761) >>> 0;
+	const b = Math.imul(Math.floor(y * 10000), 1597334677) >>> 0;
+	const c = Math.imul(tick, 3266489909) >>> 0;
+	return ((a ^ b ^ c) % 4001 - 2000) / 20000;
+}
+
+function applySpin(ball: Ball, x: number, y: number, tick: number): void {
+	const s = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy);
+	const angle = Math.atan2(ball.vy, ball.vx) + jitter(x, y, tick);
+	ball.vx = Math.cos(angle) * s;
+	ball.vy = Math.sin(angle) * s;
+}
+
+function stepBall(ball: Ball, owner: number, grid: Uint8Array, tick: number): void {
 	let nx = ball.x + ball.vx;
 	let ny = ball.y + ball.vy;
 
 	if (nx <= 0) {
 		ball.vx = Math.abs(ball.vx);
 		nx = EPS;
+		applySpin(ball, ball.x, ball.y, tick);
 	}
 	if (nx >= GRID_SIZE) {
 		ball.vx = -Math.abs(ball.vx);
 		nx = GRID_SIZE - EPS;
+		applySpin(ball, ball.x, ball.y, tick);
 	}
 	if (ny <= 0) {
 		ball.vy = Math.abs(ball.vy);
 		ny = EPS;
+		applySpin(ball, ball.x, ball.y, tick);
 	}
 	if (ny >= GRID_SIZE) {
 		ball.vy = -Math.abs(ball.vy);
 		ny = GRID_SIZE - EPS;
+		applySpin(ball, ball.x, ball.y, tick);
 	}
 
 	const targetCX = Math.floor(nx);
@@ -92,6 +112,7 @@ function stepBall(ball: Ball, owner: number, grid: Uint8Array): void {
 			grid[idx] = owner;
 			if (targetCX !== currentCX) ball.vx *= -1;
 			if (targetCY !== currentCY) ball.vy *= -1;
+			applySpin(ball, ball.x, ball.y, tick);
 			return;
 		}
 	}
@@ -101,8 +122,8 @@ function stepBall(ball: Ball, owner: number, grid: Uint8Array): void {
 }
 
 export function tick(state: GameState): GameState {
-	stepBall(state.balls[0], 0, state.grid);
-	stepBall(state.balls[1], 1, state.grid);
+	stepBall(state.balls[0], 0, state.grid, state.tick);
+	stepBall(state.balls[1], 1, state.grid, state.tick);
 	state.tick++;
 	return state;
 }
