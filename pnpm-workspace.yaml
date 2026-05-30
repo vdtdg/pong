@@ -1,3 +1,7 @@
 onlyBuiltDependencies:
   - '@tailwindcss/oxide'
   - esbuild
+
+overrides:
+  '@eslint/plugin-kit': '0.7.1'
+  svelte-eslint-parser: '1.6.0'
