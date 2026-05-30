@@ -266,9 +266,9 @@
 .viewer-count {
 	align-self: flex-end;
 	font-family: monospace;
-	font-size: 0.75rem;
-	color: #555577;
-	margin-top: 4px;
+	font-size: 0.9rem;
+	color: #666688;
+	margin-top: 6px;
 }
 
 .error-overlay {
