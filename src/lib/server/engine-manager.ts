@@ -7,7 +7,8 @@ let intervalId: ReturnType<typeof setInterval> | null = null;
 export function initGame(seed?: number): void {
 	if (currentState) return;
 
-	const s = seed ?? (Date.now() ^ (Math.random() * 0xffffffff)) >>> 0;
+	const envSeed = process.env.SEED;
+	const s = seed ?? (envSeed ? parseInt(envSeed, 10) || 0 : 12345) >>> 0;
 	currentState = createState(s);
 
 	intervalId = setInterval(() => {

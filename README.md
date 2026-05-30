@@ -26,6 +26,12 @@ Open `http://localhost:5173`.
 docker compose up --build
 ```
 
+Set a custom seed to change the game pattern:
+
+```sh
+SEED=99999 docker compose up --build
+```
+
 Open `http://localhost:3000`.
 
 ## Configuration
@@ -37,3 +43,8 @@ Edit `src/lib/config.ts`:
 - `BALL_SPEED` — cells per tick (default 6 / TICK_RATE)
 - `PIXEL_SIZE` — canvas pixel size (default 14)
 - `COLORS` — synthwave palette
+- `BRIGHTNESS` — dim factor for all canvas colors (0–1, default 0.7)
+
+### Environment variables
+
+- `SEED` — deterministic game seed (default `12345`)
