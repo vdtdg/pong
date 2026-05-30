@@ -126,7 +126,7 @@
 
 <div class="root">
 	<div class="game-wrapper">
-		<div class="counter side-left" style="color: {COLORS.ball1}">
+		<div class="counter side-left" style="color: {COLORS.player1}">
 			<span class="count-num">{count1}</span>
 			<span class="count-pct">{((count1 / totalCells) * 100).toFixed(1)}%</span>
 		</div>
@@ -139,7 +139,7 @@
 				class="pixelated"
 			></canvas>
 			<div class="counts-bar">
-				<span class="bar-count" style="color: {COLORS.ball1}">{count1}</span>
+				<span class="bar-count" style="color: {COLORS.player1}">{count1}</span>
 				<span class="bar-pct">{((count1 / totalCells) * 100).toFixed(1)}%</span>
 				<span class="bar-divider"></span>
 				<span class="bar-count" style="color: {COLORS.player2}">{count2}</span>
