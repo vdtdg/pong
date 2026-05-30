@@ -1,7 +1,17 @@
 <script>
 	import { onMount } from 'svelte';
-	import { GRID_SIZE, PIXEL_SIZE, TICK_RATE, COLORS } from './config.js';
+	import { GRID_SIZE, PIXEL_SIZE, TICK_RATE, COLORS, BRIGHTNESS, dimColor } from './config.js';
 	import { deserialize, tick } from './engine.js';
+
+	const C = {
+		background: COLORS.background,
+		player1: dimColor(COLORS.player1, BRIGHTNESS),
+		player2: dimColor(COLORS.player2, BRIGHTNESS),
+		ball1: dimColor(COLORS.ball1, BRIGHTNESS),
+		ball2: dimColor(COLORS.ball2, BRIGHTNESS),
+		ball1Glow: dimColor(COLORS.ball1Glow, BRIGHTNESS),
+		ball2Glow: dimColor(COLORS.ball2Glow, BRIGHTNESS)
+	};
 
 	let canvasEl = $state();
 	let state = $state(null);
@@ -16,7 +26,7 @@
 	function draw(ctx, s) {
 		const { grid, balls } = s;
 
-		ctx.fillStyle = COLORS.background;
+		ctx.fillStyle = C.background;
 		ctx.fillRect(0, 0, GRID_SIZE * PIXEL_SIZE, GRID_SIZE * PIXEL_SIZE);
 
 		let c1 = 0;
@@ -26,7 +36,7 @@
 				const cell = grid[y * GRID_SIZE + x];
 				if (cell === 0) c1++;
 				else c2++;
-				ctx.fillStyle = cell === 0 ? COLORS.player1 : COLORS.player2;
+				ctx.fillStyle = cell === 0 ? C.player1 : C.player2;
 				ctx.fillRect(x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
 			}
 		}
@@ -42,7 +52,7 @@
 			const b = balls[i];
 			const bx = b.x * PIXEL_SIZE;
 			const by = b.y * PIXEL_SIZE;
-			const glow = i === 0 ? COLORS.ball1Glow : COLORS.ball2Glow;
+			const glow = i === 0 ? C.ball1Glow : C.ball2Glow;
 
 			ctx.save();
 			ctx.globalAlpha = 0.3;
@@ -54,7 +64,7 @@
 			ctx.fill();
 			ctx.restore();
 
-			ctx.fillStyle = i === 0 ? COLORS.ball1 : COLORS.ball2;
+			ctx.fillStyle = i === 0 ? C.ball1 : C.ball2;
 			ctx.beginPath();
 			ctx.arc(bx, by, ballRadius, 0, Math.PI * 2);
 			ctx.fill();
