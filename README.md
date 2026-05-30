@@ -1,42 +1,39 @@
-# sv
+# Pong Battle
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Two balls bounce inside a bounded square, each confined to its own colored territory.  
+When a ball hits the boundary between the two territories, the cell flips to its color — expanding its domain.  
+A deterministic, infinite tug-of-war between pink and cyan.
 
-## Creating a project
+## How it works
 
-If you're seeing this, you've probably already done this step. Congrats!
+- The game runs **deterministically** from a single seed
+- Server simulates the game and serves the current state via `/api/game-state`
+- Clients fetch the state once and simulate locally — all spectators see the exact same game
+- No WebSocket needed, just HTTP
 
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-pnpm dlx sv@0.15.3 create --template minimal --no-types --add tailwindcss="plugins:typography" vitest="usages:unit" eslint prettier --install pnpm pong
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Running locally
 
 ```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+pnpm install
+pnpm dev
 ```
 
-## Building
+Open `http://localhost:5173`.
 
-To create a production version of your app:
+## Docker
 
 ```sh
-npm run build
+docker compose up --build
 ```
 
-You can preview the production build with `npm run preview`.
+Open `http://localhost:3000`.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## Configuration
+
+Edit `src/lib/config.ts`:
+
+- `GRID_SIZE` — grid cells per side (default 40)
+- `TICK_RATE` — simulation ticks per second (default 30)
+- `BALL_SPEED` — cells per tick (default 6 / TICK_RATE)
+- `PIXEL_SIZE` — canvas pixel size (default 14)
+- `COLORS` — synthwave palette
