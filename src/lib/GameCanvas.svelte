@@ -108,6 +108,7 @@
 			startTime = performance.now();
 			viewers = data.viewers ?? 0;
 			error = '';
+			sendHeartbeat();
 		} catch (e) {
 			error = 'Disconnected — retrying...';
 			setTimeout(resync, 2000);
@@ -124,6 +125,7 @@
 			startTime = performance.now();
 			viewers = data.viewers ?? 0;
 			error = '';
+			sendHeartbeat();
 			rafId = requestAnimationFrame(loop);
 		} catch (e) {
 			error = 'Failed to connect — retrying...';
