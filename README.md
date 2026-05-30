@@ -50,3 +50,7 @@ Edit `src/lib/config.ts`:
 | `SEED` | `12345` | deterministic game seed |
 | `STATE_FILE` | `data/game-state.json` | path to persisted state |
 | `SAVE_INTERVAL` | `5000` | ms between state saves |
+
+---
+
+Developed with the help of AI (DeepSeek V4 Pro) at a cost of $0.66.
