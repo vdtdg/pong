@@ -4,13 +4,11 @@ export const BALL_SPEED = 60 / TICK_RATE;
 export const PIXEL_SIZE = 28;
 
 export const COLORS = {
-	background: '#111128',
-	player1: '#b04080',
-	player2: '#40b0a0',
-	gridLine: '#2a2a55',
-	gridGlow: '#4030cc',
-	ball1: '#ff80b8',
-	ball2: '#80ffd0',
-	ball1Glow: '#d94fa0',
-	ball2Glow: '#4fd9c8'
+	background: '#1a1814',
+	player1: '#2a2a5a',
+	player2: '#f0e8d0',
+	ball1: '#ffffff',
+	ball2: '#1a2050',
+	ball1Glow: '#2a2a5a',
+	ball2Glow: '#f0e8d0'
 } as const;
