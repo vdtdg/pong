@@ -143,19 +143,28 @@
 
 <div class="root">
 	<div class="game-wrapper">
-		<div class="counter" style="color: {COLORS.player1}">
+		<div class="counter counter-left" style="color: {COLORS.player1}">
 			<span class="count-num">{count1}</span>
 			<span class="count-pct">{((count1 / totalCells) * 100).toFixed(1)}%</span>
 		</div>
 
-		<canvas
-			bind:this={canvasEl}
-			width={GRID_SIZE * PIXEL_SIZE}
-			height={GRID_SIZE * PIXEL_SIZE}
-			class="pixelated"
-		></canvas>
+		<div class="canvas-area">
+			<canvas
+				bind:this={canvasEl}
+				width={GRID_SIZE * PIXEL_SIZE}
+				height={GRID_SIZE * PIXEL_SIZE}
+				class="pixelated"
+			></canvas>
+			<div class="counts-bar">
+				<span class="bar-count" style="color: {COLORS.player1}">{count1}</span>
+				<span class="bar-pct">{((count1 / totalCells) * 100).toFixed(1)}%</span>
+				<span class="bar-sep"></span>
+				<span class="bar-count" style="color: {COLORS.player2}">{count2}</span>
+				<span class="bar-pct">{((count2 / totalCells) * 100).toFixed(1)}%</span>
+			</div>
+		</div>
 
-		<div class="counter" style="color: {COLORS.player2}">
+		<div class="counter counter-right" style="color: {COLORS.player2}">
 			<span class="count-num">{count2}</span>
 			<span class="count-pct">{((count2 / totalCells) * 100).toFixed(1)}%</span>
 		</div>
@@ -181,6 +190,11 @@
 	align-items: center;
 	justify-content: center;
 	gap: 16px;
+}
+
+.canvas-area {
+	position: relative;
+	line-height: 0;
 }
 
 .pixelated {
@@ -212,6 +226,10 @@
 	margin-top: 4px;
 }
 
+.counts-bar {
+	display: none;
+}
+
 .error-overlay {
 	position: absolute;
 	inset: 0;
@@ -223,9 +241,9 @@
 }
 
 @media (max-width: 640px) {
-	.game-wrapper {
-		flex-direction: column;
-		gap: 8px;
+	.counter-left,
+	.counter-right {
+		display: none;
 	}
 
 	.pixelated {
@@ -233,20 +251,37 @@
 		max-height: 75vh;
 	}
 
-	.counter {
-		flex-direction: row;
+	.counts-bar {
+		display: flex;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		align-items: center;
 		justify-content: center;
-		gap: 10px;
-		width: auto;
+		gap: 8px;
+		padding: 6px 12px;
+		background: rgba(0, 0, 0, 0.65);
+		font-family: monospace;
+		font-size: 0.85rem;
+		backdrop-filter: blur(4px);
 	}
 
-	.count-num {
-		font-size: 1.3rem;
+	.bar-count {
+		font-weight: bold;
+		text-shadow: 0 0 8px currentColor;
 	}
 
-	.count-pct {
-		font-size: 0.8rem;
-		margin-top: 0;
+	.bar-pct {
+		opacity: 0.6;
+		color: #8888aa;
+	}
+
+	.bar-sep {
+		width: 1px;
+		height: 14px;
+		background: #333366;
+		margin: 0 4px;
 	}
 }
 </style>
