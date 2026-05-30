@@ -143,12 +143,12 @@
 
 <div class="root">
 	<div class="game-wrapper">
-		<div class="counter counter-left" style="color: {COLORS.player1}">
+		<div class="counter side-left" style="color: {COLORS.player1}">
 			<span class="count-num">{count1}</span>
 			<span class="count-pct">{((count1 / totalCells) * 100).toFixed(1)}%</span>
 		</div>
 
-		<div class="canvas-area">
+		<div class="game-area">
 			<canvas
 				bind:this={canvasEl}
 				width={GRID_SIZE * PIXEL_SIZE}
@@ -158,13 +158,13 @@
 			<div class="counts-bar">
 				<span class="bar-count" style="color: {COLORS.player1}">{count1}</span>
 				<span class="bar-pct">{((count1 / totalCells) * 100).toFixed(1)}%</span>
-				<span class="bar-sep"></span>
+				<span class="bar-divider"></span>
 				<span class="bar-count" style="color: {COLORS.player2}">{count2}</span>
 				<span class="bar-pct">{((count2 / totalCells) * 100).toFixed(1)}%</span>
 			</div>
 		</div>
 
-		<div class="counter counter-right" style="color: {COLORS.player2}">
+		<div class="counter side-right" style="color: {COLORS.player2}">
 			<span class="count-num">{count2}</span>
 			<span class="count-pct">{((count2 / totalCells) * 100).toFixed(1)}%</span>
 		</div>
@@ -192,9 +192,10 @@
 	gap: 16px;
 }
 
-.canvas-area {
-	position: relative;
-	line-height: 0;
+.game-area {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .pixelated {
@@ -241,9 +242,13 @@
 }
 
 @media (max-width: 640px) {
-	.counter-left,
-	.counter-right {
+	.side-left,
+	.side-right {
 		display: none;
+	}
+
+	.game-wrapper {
+		gap: 0;
 	}
 
 	.pixelated {
@@ -253,18 +258,12 @@
 
 	.counts-bar {
 		display: flex;
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
 		align-items: center;
 		justify-content: center;
 		gap: 8px;
-		padding: 6px 12px;
-		background: rgba(0, 0, 0, 0.65);
+		padding: 8px 16px;
 		font-family: monospace;
 		font-size: 0.85rem;
-		backdrop-filter: blur(4px);
 	}
 
 	.bar-count {
@@ -273,15 +272,16 @@
 	}
 
 	.bar-pct {
-		opacity: 0.6;
+		opacity: 0.5;
 		color: #8888aa;
+		font-size: 0.75rem;
 	}
 
-	.bar-sep {
+	.bar-divider {
 		width: 1px;
-		height: 14px;
+		height: 12px;
 		background: #333366;
-		margin: 0 4px;
+		margin: 0 6px;
 	}
 }
 </style>
