@@ -9,9 +9,7 @@
 		player1: dimColor(COLORS.player1, BRIGHTNESS),
 		player2: dimColor(COLORS.player2, BRIGHTNESS),
 		ball1: dimColor(COLORS.ball1, BRIGHTNESS),
-		ball2: dimColor(COLORS.ball2, BRIGHTNESS),
-		ball1Glow: dimColor(COLORS.ball1Glow, BRIGHTNESS),
-		ball2Glow: dimColor(COLORS.ball2Glow, BRIGHTNESS)
+		ball2: dimColor(COLORS.ball2, BRIGHTNESS)
 	};
 
 	const sessionId = crypto.randomUUID();
@@ -50,23 +48,11 @@
 
 
 		const ballRadius = PIXEL_SIZE * 0.4;
-		const glowRadius = PIXEL_SIZE * 0.8;
 
 		for (let i = 0; i < 2; i++) {
 			const b = balls[i];
 			const bx = b.x * PIXEL_SIZE;
 			const by = b.y * PIXEL_SIZE;
-			const glow = i === 0 ? C.ball1Glow : C.ball2Glow;
-
-			ctx.save();
-			ctx.globalAlpha = 0.3;
-			ctx.fillStyle = glow;
-			ctx.shadowColor = glow;
-			ctx.shadowBlur = 12;
-			ctx.beginPath();
-			ctx.arc(bx, by, glowRadius, 0, Math.PI * 2);
-			ctx.fill();
-			ctx.restore();
 
 			ctx.fillStyle = i === 0 ? C.ball1 : C.ball2;
 			ctx.beginPath();
@@ -177,7 +163,7 @@
 
 <div class="root">
 	<div class="game-wrapper">
-		<div class="counter side-left" style="color: {COLORS.player1}">
+		<div class="counter side-left counter-p1">
 			<span class="count-num">{count1}</span>
 			<span class="count-pct">{((count1 / totalCells) * 100).toFixed(1)}%</span>
 		</div>
@@ -190,10 +176,10 @@
 				class="pixelated"
 			></canvas>
 			<div class="counts-bar">
-				<span class="bar-count" style="color: {COLORS.player1}">{count1}</span>
+				<span class="bar-count bar-count-p1">{count1}</span>
 				<span class="bar-pct">{((count1 / totalCells) * 100).toFixed(1)}%</span>
 				<span class="bar-divider"></span>
-				<span class="bar-count" style="color: {COLORS.player2}">{count2}</span>
+				<span class="bar-count bar-count-p2">{count2}</span>
 				<span class="bar-pct">{((count2 / totalCells) * 100).toFixed(1)}%</span>
 			</div>
 			<div class="viewer-count">
@@ -201,7 +187,7 @@
 			</div>
 		</div>
 
-		<div class="counter side-right" style="color: {COLORS.player2}">
+		<div class="counter side-right counter-p2">
 			<span class="count-num">{count2}</span>
 			<span class="count-pct">{((count2 / totalCells) * 100).toFixed(1)}%</span>
 		</div>
@@ -262,6 +248,16 @@
 	font-size: 0.9rem;
 	opacity: 0.7;
 	margin-top: 4px;
+}
+
+.counter-p1,
+.bar-count-p1 {
+	color: #ff00e5;
+}
+
+.counter-p2,
+.bar-count-p2 {
+	color: #00ffe5;
 }
 
 .counts-bar {
