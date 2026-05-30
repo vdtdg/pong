@@ -1,4 +1,4 @@
-import { GRID_SIZE, BALL_SPEED } from './config.js';
+import { GRID_SIZE, BALL_SPEED, BALL_RADIUS } from './config.js';
 import { mulberry32 } from './prng.js';
 
 export interface Ball {
@@ -99,20 +99,33 @@ function stepBall(ball: Ball, owner: number, grid: Uint8Array, tick: number): vo
 		applySpin(ball, ball.x, ball.y, tick);
 	}
 
-	const targetCX = Math.floor(nx);
-	const targetCY = Math.floor(ny);
-	const currentCX = Math.floor(ball.x);
-	const currentCY = Math.floor(ball.y);
+	const minCX = Math.floor(Math.min(ball.x, nx) - BALL_RADIUS);
+	const maxCX = Math.floor(Math.max(ball.x, nx) + BALL_RADIUS);
+	const minCY = Math.floor(Math.min(ball.y, ny) - BALL_RADIUS);
+	const maxCY = Math.floor(Math.max(ball.y, ny) + BALL_RADIUS);
 
-	if (targetCX !== currentCX || targetCY !== currentCY) {
-		const idx = targetCY * GRID_SIZE + targetCX;
-		if (grid[idx] !== owner) {
-			grid[idx] = owner;
-			if (targetCX !== currentCX) ball.vx *= -1;
-			if (targetCY !== currentCY) ball.vy *= -1;
-			applySpin(ball, ball.x, ball.y, tick);
-			return;
+	let bounceX = false;
+	let bounceY = false;
+
+	for (let cy = minCY; cy <= maxCY; cy++) {
+		for (let cx = minCX; cx <= maxCX; cx++) {
+			if (cx < 0 || cx >= GRID_SIZE || cy < 0 || cy >= GRID_SIZE) continue;
+			const idx = cy * GRID_SIZE + cx;
+			if (grid[idx] !== owner) {
+				grid[idx] = owner;
+				if (cx < Math.floor(ball.x)) bounceX = true;
+				if (cx > Math.floor(ball.x)) bounceX = true;
+				if (cy < Math.floor(ball.y)) bounceY = true;
+				if (cy > Math.floor(ball.y)) bounceY = true;
+			}
 		}
+	}
+
+	if (bounceX || bounceY) {
+		if (bounceX) ball.vx *= -1;
+		if (bounceY) ball.vy *= -1;
+		applySpin(ball, ball.x, ball.y, tick);
+		return;
 	}
 
 	ball.x = nx;

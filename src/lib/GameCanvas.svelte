@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
-	import { GRID_SIZE, PIXEL_SIZE, TICK_RATE, COLORS, BRIGHTNESS, dimColor } from './config.js';
+	import { GRID_SIZE, PIXEL_SIZE, TICK_RATE, COLORS, BALL_RADIUS, BRIGHTNESS, dimColor } from './config.js';
 	import { deserialize, tick } from './engine.js';
 
 	const C = {
@@ -47,7 +47,7 @@
 
 
 
-		const ballRadius = PIXEL_SIZE * 0.4;
+		const ballRadius = PIXEL_SIZE * BALL_RADIUS;
 
 		for (let i = 0; i < 2; i++) {
 			const b = balls[i];
