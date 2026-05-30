@@ -126,10 +126,27 @@
 		}
 	}
 
+	let resuming = false;
+
+	async function handleResume() {
+		if (document.hidden || resuming || !state) return;
+		resuming = true;
+		if (rafId) cancelAnimationFrame(rafId);
+		await resync();
+		if (state && canvasEl) {
+			rafId = requestAnimationFrame(loop);
+		}
+		resuming = false;
+	}
+
 	onMount(() => {
 		init();
+		document.addEventListener('visibilitychange', handleResume);
+		window.addEventListener('focus', handleResume);
 		return () => {
 			if (rafId) cancelAnimationFrame(rafId);
+			document.removeEventListener('visibilitychange', handleResume);
+			window.removeEventListener('focus', handleResume);
 		};
 	});
 </script>
