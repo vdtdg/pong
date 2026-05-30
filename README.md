@@ -56,4 +56,4 @@ Edit `src/lib/config.ts`:
 
 ---
 
-Developed with the help of AI (DeepSeek V4 Pro) at a cost of $0.75.
+Developed with the help of AI (DeepSeek V4 Pro) at a cost of $1.02.
