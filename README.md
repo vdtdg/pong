@@ -6,8 +6,6 @@ A deterministic, infinite tug-of-war. All spectators see the exact same game.
 
 [![demo](demo.gif)](https://dtdg.fr/pong)
 
-![demo](demo.png)
-
 ## How it works
 
 - Seeded **deterministic** engine runs on both server and client
