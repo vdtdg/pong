@@ -4,6 +4,8 @@ Two balls bounce inside a bounded square, each confined to its own colored terri
 When a ball hits the boundary between the two territories, the cell flips to its color — expanding its domain.  
 A deterministic, infinite tug-of-war. All spectators see the exact same game.
 
+Inspired by [pong-wars](https://github.com/vnglst/pong-wars).
+
 [![demo](demo.gif)](https://dtdg.fr/pong)
 
 ## How it works
