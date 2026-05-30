@@ -50,6 +50,9 @@ Edit `src/lib/config.ts`:
 | `SEED` | `12345` | deterministic game seed |
 | `STATE_FILE` | `data/game-state.json` | path to persisted state |
 | `SAVE_INTERVAL` | `5000` | ms between state saves |
+| `HOST` | `0.0.0.0` | bind address (Docker) |
+| `PORT` | `3000` | listen port (Docker) |
+| `BASE` | `/pong` | path prefix (build-time) |
 
 ---
 

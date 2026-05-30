@@ -1,6 +1,9 @@
 services:
   pong:
-    build: .
+    build:
+      context: .
+      args:
+        - BASE=${BASE:-/pong}
     ports:
       - '${PORT:-3000}:${PORT:-3000}'
     restart: unless-stopped

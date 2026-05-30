@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import { base } from '$app/paths';
 	import { GRID_SIZE, PIXEL_SIZE, TICK_RATE, COLORS, BRIGHTNESS, dimColor } from './config.js';
 	import { deserialize, tick } from './engine.js';
 
@@ -100,7 +101,7 @@
 
 	async function resync() {
 		try {
-			const res = await fetch('/api/game-state');
+			const res = await fetch(`${base}/api/game-state`);
 			if (!res.ok) throw new Error('Fetch failed');
 			const data = await res.json();
 			state = deserialize(data);
@@ -117,7 +118,7 @@
 
 	async function init() {
 		try {
-			const res = await fetch('/api/game-state');
+			const res = await fetch(`${base}/api/game-state`);
 			if (!res.ok) throw new Error('Fetch failed');
 			const data = await res.json();
 			state = deserialize(data);
@@ -148,7 +149,7 @@
 
 	async function sendHeartbeat() {
 		try {
-			const res = await fetch('/api/heartbeat', {
+			const res = await fetch(`${base}/api/heartbeat`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ sessionId })
