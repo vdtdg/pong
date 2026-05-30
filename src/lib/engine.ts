@@ -78,24 +78,24 @@ function stepBall(ball: Ball, owner: number, grid: Uint8Array, tick: number): vo
 	let nx = ball.x + ball.vx;
 	let ny = ball.y + ball.vy;
 
-	if (nx <= 0) {
+	if (nx - BALL_RADIUS <= 0) {
 		ball.vx = Math.abs(ball.vx);
-		nx = EPS;
+		nx = BALL_RADIUS + EPS;
 		applySpin(ball, ball.x, ball.y, tick);
 	}
-	if (nx >= GRID_SIZE) {
+	if (nx + BALL_RADIUS >= GRID_SIZE) {
 		ball.vx = -Math.abs(ball.vx);
-		nx = GRID_SIZE - EPS;
+		nx = GRID_SIZE - BALL_RADIUS - EPS;
 		applySpin(ball, ball.x, ball.y, tick);
 	}
-	if (ny <= 0) {
+	if (ny - BALL_RADIUS <= 0) {
 		ball.vy = Math.abs(ball.vy);
-		ny = EPS;
+		ny = BALL_RADIUS + EPS;
 		applySpin(ball, ball.x, ball.y, tick);
 	}
-	if (ny >= GRID_SIZE) {
+	if (ny + BALL_RADIUS >= GRID_SIZE) {
 		ball.vy = -Math.abs(ball.vy);
-		ny = GRID_SIZE - EPS;
+		ny = GRID_SIZE - BALL_RADIUS - EPS;
 		applySpin(ball, ball.x, ball.y, tick);
 	}
 
