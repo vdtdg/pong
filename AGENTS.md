@@ -149,6 +149,7 @@ See `src/lib/config.ts`:
 | `GRID_SIZE` | 20 | cells per side |
 | `TICK_RATE` | 60 | ticks per second |
 | `BALL_SPEED` | 10 / TICK_RATE | cells per tick (constant for both balls) |
+| `BALL_RADIUS` | 0.4 | ball size in cell units |
 | `PIXEL_SIZE` | 30 | canvas pixels per cell |
 | `BRIGHTNESS` | 0.8 | 0–1 dim factor applied to all canvas colors |
 | `COLORS` | synthwave neon | player1/2, ball1/2, ball glows, background |
