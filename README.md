@@ -2,14 +2,14 @@
 
 Two balls bounce inside a bounded square, each confined to its own colored territory.  
 When a ball hits the boundary between the two territories, the cell flips to its color — expanding its domain.  
-A deterministic, infinite tug-of-war between pink and cyan.
+A deterministic, infinite tug-of-war. All spectators see the exact same game.
 
 ## How it works
 
-- The game runs **deterministically** from a single seed
-- Server simulates the game and serves the current state via `/api/game-state`
-- Clients fetch the state once and simulate locally — all spectators see the exact same game
-- No WebSocket needed, just HTTP
+- Seeded **deterministic** engine runs on both server and client
+- Server saves state to disk every 5 s — survives restarts
+- On startup, loads saved state if found, otherwise creates a new game from the seed
+- Clients fetch `/api/game-state` once and simulate locally — no WebSocket needed
 
 ## Running locally
 
@@ -26,25 +26,25 @@ Open `http://localhost:5173`.
 docker compose up --build
 ```
 
-Set a custom seed to change the game pattern:
-
-```sh
-SEED=99999 docker compose up --build
-```
-
-Open `http://localhost:3000`.
+State persists in `./data/` on the host. Open `http://localhost:3000`.
 
 ## Configuration
 
 Edit `src/lib/config.ts`:
 
-- `GRID_SIZE` — grid cells per side (default 40)
-- `TICK_RATE` — simulation ticks per second (default 30)
-- `BALL_SPEED` — cells per tick (default 6 / TICK_RATE)
-- `PIXEL_SIZE` — canvas pixel size (default 14)
-- `COLORS` — synthwave palette
-- `BRIGHTNESS` — dim factor for all canvas colors (0–1, default 0.7)
+| Option | Default | Description |
+|---|---|---|
+| `GRID_SIZE` | 20 | cells per side |
+| `TICK_RATE` | 60 | simulation ticks per second |
+| `BALL_SPEED` | 10 / TICK_RATE | cells per tick |
+| `PIXEL_SIZE` | 30 | canvas pixels per cell |
+| `BRIGHTNESS` | 0.8 | dim factor for canvas colors (0–1) |
+| `COLORS` | synthwave | territory, ball, and glow hex colors |
 
-### Environment variables
+## Environment variables
 
-- `SEED` — deterministic game seed (default `12345`)
+| Variable | Default | Description |
+|---|---|---|
+| `SEED` | `12345` | deterministic game seed |
+| `STATE_FILE` | `data/game-state.json` | path to persisted state |
+| `SAVE_INTERVAL` | `5000` | ms between state saves |
