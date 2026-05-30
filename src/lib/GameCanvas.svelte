@@ -169,54 +169,84 @@
 </div>
 
 <style>
-	.root {
-		position: relative;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
+.root {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 
+.game-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+}
+
+.pixelated {
+	image-rendering: pixelated;
+	image-rendering: crisp-edges;
+	max-width: calc(100vw - 200px);
+	max-height: 95vmin;
+}
+
+.counter {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: monospace;
+	width: 80px;
+	flex-shrink: 0;
+}
+
+.count-num {
+	font-size: 2.2rem;
+	font-weight: bold;
+	text-shadow: 0 0 12px currentColor;
+	line-height: 1;
+}
+
+.count-pct {
+	font-size: 0.9rem;
+	opacity: 0.7;
+	margin-top: 4px;
+}
+
+.error-overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.8);
+	color: white;
+}
+
+@media (max-width: 640px) {
 	.game-wrapper {
-		display: flex;
-		align-items: center;
-		gap: 24px;
+		flex-direction: column;
+		gap: 8px;
 	}
 
 	.pixelated {
-		image-rendering: pixelated;
-		image-rendering: crisp-edges;
-		max-height: 90vmin;
-		max-width: 70vmin;
+		max-width: 95vw;
+		max-height: 75vh;
 	}
 
 	.counter {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		font-family: monospace;
-		min-width: 80px;
+		flex-direction: row;
+		justify-content: center;
+		gap: 10px;
+		width: auto;
 	}
 
 	.count-num {
-		font-size: 2.5rem;
-		font-weight: bold;
-		text-shadow: 0 0 12px currentColor;
-		line-height: 1;
+		font-size: 1.3rem;
 	}
 
 	.count-pct {
-		font-size: 1rem;
-		opacity: 0.7;
-		margin-top: 4px;
+		font-size: 0.8rem;
+		margin-top: 0;
 	}
-
-	.error-overlay {
-		position: absolute;
-		inset: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background: rgba(0, 0, 0, 0.8);
-		color: white;
-	}
+}
 </style>
