@@ -76,6 +76,7 @@ export function recordHeartbeat(sessionId: string): void {
 	for (const [id, lastSeen] of viewers) {
 		if (now - lastSeen > 15_000) viewers.delete(id);
 	}
+	console.log(`[pong] heartbeat ${sessionId.slice(0, 8)} | ${viewers.size} viewers`);
 }
 
 export function getViewerCount(): number {
