@@ -266,7 +266,7 @@
 .viewer-count {
 	align-self: flex-end;
 	font-family: monospace;
-	font-size: 0.9rem;
+	font-size: 1.2rem;
 	color: #666688;
 	margin-top: 6px;
 }
