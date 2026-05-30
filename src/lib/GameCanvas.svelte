@@ -146,11 +146,13 @@
 
 	async function sendHeartbeat() {
 		try {
-			await fetch('/api/heartbeat', {
+			const res = await fetch('/api/heartbeat', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ sessionId })
 			});
+			const data = await res.json();
+			viewers = data.viewers ?? viewers;
 		} catch {
 			/* silent */
 		}

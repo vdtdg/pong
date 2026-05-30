@@ -1,5 +1,5 @@
 import { json } from '@sveltejs/kit';
-import { recordHeartbeat } from '$lib/server/engine-manager.js';
+import { recordHeartbeat, getViewerCount } from '$lib/server/engine-manager.js';
 
 export async function POST({ request }) {
 	try {
@@ -8,5 +8,5 @@ export async function POST({ request }) {
 	} catch {
 		/* ignore malformed body */
 	}
-	return json({ ok: true });
+	return json({ viewers: getViewerCount() });
 }
