@@ -8,17 +8,17 @@ simulation, clients replay it deterministically from a snapshot.
 
 ```
 ┌──────────────────────────────────────────────────────┐
-│  src/lib/engine.ts     Shared deterministic engine    │
-│  - Pure functions: tick(), createState(), ...         │
-│  - Seeded PRNG (mulberry32)                           │
-│  - Grid: Uint8Array(GRID_SIZE × GRID_SIZE)            │
+│  src/lib/engine.ts     Shared deterministic engine   │
+│  - Pure functions: tick(), createState(), ...        │
+│  - Seeded PRNG (mulberry32)                          │
+│  - Grid: Uint8Array(GRID_SIZE × GRID_SIZE)           │
 │  - Balls: [{x, y, vx, vy}]                           │
-│                                                       │
+│                                                      │
 │  Runs on BOTH server and client — key design point   │
 └──────────────────────────────────────────────────────┘
-          ▲                              ▲
-          │                              │
- ┌────────┴─────────┐         ┌─────────┴──────────┐
+           ▲                              ▲
+           │                              │
+ ┌─────────┴─────────┐         ┌──────────┴──────────┐
  │ Server (Node.js)  │         │ Client (Browser)    │
  │                   │         │                     │
  │ engine-manager.ts │  HTTP   │ GameCanvas.svelte   │
