@@ -67,6 +67,25 @@ export async function initGame(seed?: number): Promise<void> {
 	process.on('SIGINT', shutdown);
 }
 
+const viewers = new Map<string, number>();
+
+export function recordHeartbeat(sessionId: string): void {
+	const now = Date.now();
+	viewers.set(sessionId, now);
+
+	for (const [id, lastSeen] of viewers) {
+		if (now - lastSeen > 15_000) viewers.delete(id);
+	}
+}
+
+export function getViewerCount(): number {
+	const now = Date.now();
+	for (const [id, lastSeen] of viewers) {
+		if (now - lastSeen > 15_000) viewers.delete(id);
+	}
+	return viewers.size;
+}
+
 export function getCurrentState(): GameState {
 	return currentState;
 }
