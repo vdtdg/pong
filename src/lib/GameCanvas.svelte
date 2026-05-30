@@ -20,12 +20,15 @@
 			for (let x = 0; x < GRID_SIZE; x++) {
 				const cell = grid[y * GRID_SIZE + x];
 				ctx.fillStyle = cell === 0 ? COLORS.player1 : COLORS.player2;
-				ctx.fillRect(x * PIXEL_SIZE, y * PIXEL_SIZE, PIXEL_SIZE, PIXEL_SIZE);
+				ctx.fillRect(x * PIXEL_SIZE + 1, y * PIXEL_SIZE + 1, PIXEL_SIZE - 2, PIXEL_SIZE - 2);
 			}
 		}
 
+		ctx.save();
+		ctx.shadowColor = COLORS.gridGlow;
+		ctx.shadowBlur = 6;
 		ctx.strokeStyle = COLORS.gridLine;
-		ctx.lineWidth = 0.5;
+		ctx.lineWidth = 1;
 		for (let x = 0; x <= GRID_SIZE; x++) {
 			ctx.beginPath();
 			ctx.moveTo(x * PIXEL_SIZE, 0);
@@ -38,6 +41,7 @@
 			ctx.lineTo(GRID_SIZE * PIXEL_SIZE, y * PIXEL_SIZE);
 			ctx.stroke();
 		}
+		ctx.restore();
 
 		const ballRadius = PIXEL_SIZE * 0.4;
 		const glowRadius = PIXEL_SIZE * 0.8;
