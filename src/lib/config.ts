@@ -5,10 +5,10 @@ export const PIXEL_SIZE = 28;
 
 export const COLORS = {
 	background: '#0d0d0d',
-	player1: '#ff4d4d',
-	player2: '#4da6ff',
-	ball1: '#ff9999',
-	ball2: '#99ccff',
-	ball1Glow: '#ff4d4d',
-	ball2Glow: '#4da6ff'
+	player1: '#fcf638',
+	player2: '#be94fc',
+	ball1: '#fef9a0',
+	ball2: '#dcc8ff',
+	ball1Glow: '#fcf638',
+	ball2Glow: '#be94fc'
 } as const;
