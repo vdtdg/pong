@@ -21,12 +21,13 @@ simulation, clients replay it deterministically from a snapshot.
  ┌─────────┴─────────┐         ┌──────────┴──────────┐
  │ Server (Node.js)  │         │ Client (Browser)    │
  │                   │         │                     │
- │ engine-manager.ts │  HTTP   │ GameCanvas.svelte   │
- │ - Tick loop       │ ─────→  │ - Fetches init      │
- │ - Saves to disk   │  GET    │ - Simulates locally │
- │ - Loads on start  │         │ - raf() loop:       │
- │ - Serves endpoint │         │   tick() + draw()   │
- └───────────────────┘         └─────────────────────┘
+│  engine-manager.ts │  HTTP   │ GameCanvas.svelte   │
+│  - Tick loop       │ ─────→  │ - Fetches init      │
+│  - Saves to disk   │  GET    │ - Simulates locally │
+│  - Loads on start  │ ←─────  │ - raf() loop        │
+│  - Serves endpoint │  POST   │ - Sends heartbeat   │
+│  - Tracks viewers  │         │ - Displays counts   │
+└───────────────────┘         └─────────────────────┘
 ```
 
 ## File map
@@ -44,8 +45,11 @@ src/
 │   ├── +page.svelte           # Main page, mounts GameCanvas
 │   ├── +layout.svelte         # Root layout
 │   ├── layout.css             # Tailwind + dark background
-│   └── api/game-state/
-│       └── +server.ts         # GET endpoint → { tick, seed, grid, balls }
+│   └── api/
+│       ├── game-state/
+│       │   └── +server.ts     # GET endpoint → { tick, seed, grid, balls, viewers }
+│       └── heartbeat/
+│           └── +server.ts     # POST endpoint → records session, returns { viewers }
 ├── hooks.server.ts            # Awaits initGame() on startup
 └── app.html                   # HTML shell, favicon, theme-color meta
 ```
@@ -104,15 +108,24 @@ Each tick processes both balls:
 - **Graceful shutdown**: saves on `SIGTERM`/`SIGINT`
 - In Docker, `./data:/app/data` volume mount persists across rebuilds
 
+## Viewer tracking
+
+- Clients POST to `/api/heartbeat` with a random session ID every 10 s
+- Server stores a `Map<sessionId, lastSeen>` timestamp, prunes entries >15 s stale
+- Viewer count is returned in both the heartbeat response and the game-state response
+- Client fires a heartbeat immediately after loading state (init + resync), then every 10 s
+
 ## Client simulation
 
-1. Fetch `GET /api/game-state` → receives `{ tick, seed, grid, balls }`
+1. Fetch `GET /api/game-state` → receives `{ tick, seed, grid, balls, viewers }`
 2. Deserialize into local `GameState`
-3. `requestAnimationFrame` loop:
+3. Send heartbeat immediately, then every 10 s via `setInterval`
+4. `requestAnimationFrame` loop:
    - Compute elapsed time → target tick
    - Run `tick()` as many times as needed to catch up
    - If > 120 ticks behind → re-fetch from server (resync)
-4. Render to `<canvas>` with pixel-art scaling
+5. Render to `<canvas>` with pixel-art scaling
+6. On `visibilitychange` / `focus` → force resync and restart loop
 
 ## Canvas rendering
 
