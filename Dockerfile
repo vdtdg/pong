@@ -21,6 +21,8 @@ COPY --from=builder /app/pnpm-lock.yaml /app/pnpm-lock.yaml
 COPY --from=builder /app/pnpm-workspace.yaml /app/pnpm-workspace.yaml
 COPY --from=builder /app/.npmrc /app/.npmrc
 
+RUN npm install --global npm@12.2.3
+
 RUN pnpm install --frozen-lockfile --prod
 
 EXPOSE 3000
